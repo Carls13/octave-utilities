@@ -15,6 +15,12 @@ T = 4; % Period
 w0 = 2*pi/T; % Angular frequency
 % Assuming an amplitude of A=1
 
+% Fundamental frequency
+C1 = 0
+
+% Sum of unwanted harmonics
+unwanted = 0
+
 for n = 1:10
     f1=@(t) t;
     i1=quad(f1, -1, 1);
@@ -41,4 +47,13 @@ for n = 1:10
     disp("A0: "); disp(a0);
     disp("An: "); disp(an);
     disp("Bn: "); disp(bn);
+    
+    if (n == 1)
+        C1 = an + bn
+    else
+        unwanted = unwanted + (an + bn)^2;
+    endif
 endfor
+
+THD = (sqrt(unwanted) / C1) * 100;
+disp("THD is: ");disp(THD);disp(" %")
